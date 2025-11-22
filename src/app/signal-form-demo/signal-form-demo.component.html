@@ -1,0 +1,406 @@
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="text-center mb-12">
+    <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+      Angular 21 Signal Forms Demo
+    </h1>
+    <p class="text-xl text-slate-600">
+      Comprehensive demonstration of all Signal Forms features
+    </p>
+  </div>
+
+  <!-- Form -->
+  <form (submit)="onSubmit($event)" class="bg-white rounded-2xl shadow-xl p-8" novalidate>
+
+    <!-- Personal Information Section -->
+    <section class="mb-10 pb-10 border-b border-slate-200">
+      <h2 class="text-2xl font-semibold text-slate-800 mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-gradient-to-b from-purple-600 to-pink-600 rounded"></span>
+        Personal Information
+      </h2>
+
+      <!-- First Name & Last Name Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- First Name -->
+        <div class="flex flex-col gap-2">
+          <label for="firstName" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+            First Name <span class="text-red-500 font-semibold">*</span>
+          </label>
+          <input id="firstName" type="text" [field]="userForm.firstName" placeholder="Enter your first name"
+            class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+          @if (userForm.firstName().touched() && userForm.firstName().invalid()) {
+          <ul class="list-none p-0 m-0 flex flex-col gap-1">
+            @for (error of userForm.firstName().errors(); track error) {
+            <li class="text-red-500 text-sm flex items-center gap-1.5">
+              <span class="text-base">⚠</span>
+              {{ error.message }}
+            </li>
+            }
+          </ul>
+          }
+        </div>
+
+        <!-- Last Name -->
+        <div class="flex flex-col gap-2">
+          <label for="lastName" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+            Last Name <span class="text-red-500 font-semibold">*</span>
+          </label>
+          <input id="lastName" type="text" [field]="userForm.lastName" placeholder="Enter your last name"
+            class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+          @if (userForm.lastName().touched() && userForm.lastName().invalid()) {
+          <ul class="list-none p-0 m-0 flex flex-col gap-1">
+            @for (error of userForm.lastName().errors(); track error) {
+            <li class="text-red-500 text-sm flex items-center gap-1.5">
+              <span class="text-base">⚠</span>
+              {{ error.message }}
+            </li>
+            }
+          </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="username" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Username <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <input id="username" type="text" [field]="userForm.username" placeholder="Choose a username"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+        <small class="text-sm text-slate-600">Only letters, numbers, and underscores allowed</small>
+        @if (userForm.username().touched() && userForm.username().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.username().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="email" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Email <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <input id="email" type="email" [field]="userForm.email" placeholder="your.email@example.com"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+        @if (userForm.email().touched() && userForm.email().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.email().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Age & Birthdate Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Age -->
+        <div class="flex flex-col gap-2">
+          <label for="age" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+            Age <span class="text-red-500 font-semibold">*</span>
+          </label>
+          <input id="age" type="number" [field]="userForm.age" placeholder="18"
+            class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+          @if (userForm.age().touched() && userForm.age().invalid()) {
+          <ul class="list-none p-0 m-0 flex flex-col gap-1">
+            @for (error of userForm.age().errors(); track error) {
+            <li class="text-red-500 text-sm flex items-center gap-1.5">
+              <span class="text-base">⚠</span>
+              {{ error.message }}
+            </li>
+            }
+          </ul>
+          }
+        </div>
+
+        <!-- Birthdate -->
+        <div class="flex flex-col gap-2">
+          <label for="birthdate" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+            Birthdate <span class="text-red-500 font-semibold">*</span>
+          </label>
+          <input id="birthdate" type="date" [field]="userForm.birthdate"
+            class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+          @if (userForm.birthdate().touched() && userForm.birthdate().invalid()) {
+          <ul class="list-none p-0 m-0 flex flex-col gap-1">
+            @for (error of userForm.birthdate().errors(); track error) {
+            <li class="text-red-500 text-sm flex items-center gap-1.5">
+              <span class="text-base">⚠</span>
+              {{ error.message }}
+            </li>
+            }
+          </ul>
+          }
+        </div>
+      </div>
+
+      <!-- Preferred Time -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="preferredTime" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Preferred Contact Time <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <input id="preferredTime" type="time" [field]="userForm.preferredTime"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+        @if (userForm.preferredTime().touched() && userForm.preferredTime().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.preferredTime().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Country -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="country" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Country <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <select id="country" [field]="userForm.country"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100">
+          @for (country of countries; track country.code) {
+          <option [value]="country.code">{{ country.name }}</option>
+          }
+        </select>
+        @if (userForm.country().touched() && userForm.country().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.country().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Bio -->
+      <div class="flex flex-col gap-2">
+        <label for="bio" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Bio <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <textarea id="bio" [field]="userForm.bio" rows="4" placeholder="Tell us about yourself (10-500 characters)"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100 resize-y min-h-[100px]"></textarea>
+        <small class="text-sm text-slate-600">{{ userForm.bio().value().length }} / 500 characters</small>
+        @if (userForm.bio().touched() && userForm.bio().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.bio().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="mb-10 pb-10 border-b border-slate-200">
+      <h2 class="text-2xl font-semibold text-slate-800 mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-gradient-to-b from-purple-600 to-pink-600 rounded"></span>
+        Security
+      </h2>
+
+      <!-- Password -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="password" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Password <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <input id="password" type="password" [field]="userForm.password" placeholder="Enter a strong password"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+        <small class="text-sm text-slate-600">Must contain uppercase, lowercase, number, and special character</small>
+        @if (userForm.password().touched() && userForm.password().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.password().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="flex flex-col gap-2">
+        <label for="confirmPassword" class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Confirm Password <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <input id="confirmPassword" type="password" [field]="userForm.confirmPassword"
+          placeholder="Re-enter your password"
+          class="px-4 py-3 border-2 border-slate-200 rounded-lg text-base bg-slate-50 transition-all focus:outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100" />
+        @if (userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.confirmPassword().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+    </section>
+
+    <!-- Preferences Section -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold text-slate-800 mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-gradient-to-b from-purple-600 to-pink-600 rounded"></span>
+        Preferences
+      </h2>
+
+      <!-- Subscription Plan (Radio Buttons) -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Subscription Plan <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <div class="flex flex-col gap-3">
+          <label
+            class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+            <input type="radio" value="free" [field]="userForm.subscriptionPlan"
+              class="w-5 h-5 cursor-pointer accent-purple-600" />
+            <span class="has-[:checked]:font-semibold has-[:checked]:text-purple-600">Free - Basic features</span>
+          </label>
+          <label
+            class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+            <input type="radio" value="premium" [field]="userForm.subscriptionPlan"
+              class="w-5 h-5 cursor-pointer accent-purple-600" />
+            <span>Premium - All features ($9.99/month)</span>
+          </label>
+          <label
+            class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+            <input type="radio" value="enterprise" [field]="userForm.subscriptionPlan"
+              class="w-5 h-5 cursor-pointer accent-purple-600" />
+            <span>Enterprise - Custom solutions (Contact us)</span>
+          </label>
+        </div>
+        @if (userForm.subscriptionPlan().touched() && userForm.subscriptionPlan().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.subscriptionPlan().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Notification Preferences (Checkboxes) -->
+      <div class="flex flex-col gap-2 mb-6">
+        <label class="text-sm font-medium text-slate-700 uppercase tracking-wide">
+          Notification Preferences <span class="text-red-500 font-semibold">*</span>
+        </label>
+        <div class="flex flex-col gap-3">
+          <label
+            class="flex items-center gap-3 p-3 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+            <input type="checkbox" [field]="userForm.emailNotifications"
+              class="w-5 h-5 cursor-pointer accent-purple-600" />
+            <span>Email notifications</span>
+          </label>
+          <label
+            class="flex items-center gap-3 p-3 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+            <input type="checkbox" [field]="userForm.smsNotifications"
+              class="w-5 h-5 cursor-pointer accent-purple-600" />
+            <span>SMS notifications</span>
+          </label>
+          <label
+            class="flex items-center gap-3 p-3 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+            <input type="checkbox" [field]="userForm.pushNotifications"
+              class="w-5 h-5 cursor-pointer accent-purple-600" />
+            <span>Push notifications</span>
+          </label>
+        </div>
+        @if (userForm.emailNotifications().touched() && userForm.emailNotifications().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.emailNotifications().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+
+      <!-- Terms Agreement -->
+      <div class="flex flex-col gap-2">
+        <label
+          class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-lg cursor-pointer transition-all bg-slate-50 hover:border-slate-300 hover:bg-white has-[:checked]:border-purple-500 has-[:checked]:bg-purple-50">
+          <input type="checkbox" [field]="userForm.agreeToTerms" class="w-5 h-5 cursor-pointer accent-purple-600" />
+          <span>
+            I agree to the <a href="#" class="text-purple-600 font-medium hover:underline">Terms and Conditions</a>
+            <span class="text-red-500 font-semibold">*</span>
+          </span>
+        </label>
+        @if (userForm.agreeToTerms().touched() && userForm.agreeToTerms().invalid()) {
+        <ul class="list-none p-0 m-0 flex flex-col gap-1">
+          @for (error of userForm.agreeToTerms().errors(); track error) {
+          <li class="text-red-500 text-sm flex items-center gap-1.5">
+            <span class="text-base">⚠</span>
+            {{ error.message }}
+          </li>
+          }
+        </ul>
+        }
+      </div>
+    </section>
+
+    <!-- Form Actions -->
+    <div class="flex flex-wrap gap-4 mt-8">
+      <button type="submit"
+        class="px-8 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold uppercase tracking-wide transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/40 active:translate-y-0">
+        Submit Form
+      </button>
+      <button type="button" (click)="resetForm()"
+        class="px-8 py-3.5 bg-slate-600 text-white rounded-lg font-semibold uppercase tracking-wide transition-all hover:bg-slate-700 hover:-translate-y-0.5 active:translate-y-0">
+        Reset Form
+      </button>
+      <button type="button" (click)="fillSampleData()"
+        class="px-8 py-3.5 bg-slate-100 text-slate-700 border-2 border-slate-200 rounded-lg font-semibold uppercase tracking-wide transition-all hover:bg-slate-200 hover:border-slate-300 hover:-translate-y-0.5 active:translate-y-0">
+        Fill Sample Data
+      </button>
+    </div>
+
+    <!-- Form Status -->
+    <div class="mt-8 p-6 bg-slate-50 rounded-lg flex flex-wrap gap-8">
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-slate-600 text-sm">Form Valid:</span>
+        <span [class]="userForm().valid() ? 'text-green-600 font-semibold' : 'text-red-500 font-semibold'">
+          {{ userForm().valid() ? '✓ Yes' : '✗ No' }}
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-slate-600 text-sm">Form Touched:</span>
+        <span class="text-slate-800">{{ userForm().touched() ? 'Yes' : 'No' }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-slate-600 text-sm">Form Dirty:</span>
+        <span class="text-slate-800">{{ userForm().dirty() ? 'Yes' : 'No' }}</span>
+      </div>
+    </div>
+  </form>
+
+  <!-- Submitted Data Display -->
+  @if (submittedData()) {
+  <div
+    class="mt-8 p-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white shadow-xl shadow-green-500/30">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      ✓ Form Submitted Successfully!
+    </h2>
+    <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+      <h3 class="text-lg font-semibold mb-4">Submitted Data:</h3>
+      <pre class="bg-black/20 p-4 rounded-md overflow-x-auto text-sm leading-relaxed">{{ submittedData() | json }}</pre>
+    </div>
+  </div>
+  }
+</div>
