@@ -12,6 +12,7 @@ import {
   pattern,
   validate,
   customError,
+  submit,
 } from '@angular/forms/signals';
 
 interface UserRegistrationData {
@@ -53,7 +54,6 @@ interface UserRegistrationData {
 @Component({
   selector: 'app-signal-form-demo',
   templateUrl: './signal-form-demo.component.html',
-  styleUrl: './signal-form-demo.component.css',
   imports: [Field, JsonPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -128,19 +128,19 @@ export class SignalFormDemoComponent {
 
     // Date validation
     required(schemaPath.birthdate, { message: 'Birthdate is required' });
-    // validate(schemaPath.birthdate, (value) => {
-    //   if (!value) return null;
-    //   const selectedDate = new Date(value);
-    //   const today = new Date();
-    //   const age = today.getFullYear() - selectedDate.getFullYear();
-    //   if (age < 18) {
-    //     return customError({ kind: 'age', message: 'You must be at least 18 years old' });
-    //   }
-    //   if (selectedDate > today) {
-    //     return customError({ kind: 'future', message: 'Birthdate cannot be in the future' });
-    //   }
-    //   return null;
-    // });
+    validate(schemaPath.birthdate, ({ value }) => {
+      if (!value()) return null;
+      const selectedDate = new Date(value());
+      const today = new Date();
+      const age = today.getFullYear() - selectedDate.getFullYear();
+      if (age < 18) {
+        return customError({ kind: 'age', message: 'You must be at least 18 years old' });
+      }
+      if (selectedDate > today) {
+        return customError({ kind: 'future', message: 'Birthdate cannot be in the future' });
+      }
+      return null;
+    });
 
     // Time validation
     required(schemaPath.preferredTime, { message: 'Preferred time is required' });
@@ -159,16 +159,16 @@ export class SignalFormDemoComponent {
 
     // Confirm password - custom cross-field validation
     required(schemaPath.confirmPassword, { message: 'Please confirm your password' });
-    // validate(schemaPath.confirmPassword, (confirmValue) => {
-    //   const passwordValue = this.userForm.password().value();
-    //   if (confirmValue !== passwordValue) {
-    //     return customError({
-    //       kind: 'passwordMismatch',
-    //       message: 'Passwords do not match',
-    //     });
-    //   }
-    //   return null;
-    // });
+    validate(schemaPath.confirmPassword, ({ value: confirmValue }) => {
+      const passwordValue = this.userForm.password().value();
+      if (confirmValue() !== passwordValue) {
+        return customError({
+          kind: 'passwordMismatch',
+          message: 'Passwords do not match',
+        });
+      }
+      return null;
+    });
 
     // Checkbox validation - at least one notification method
     validate(schemaPath.emailNotifications, () => {
@@ -210,15 +210,11 @@ export class SignalFormDemoComponent {
     // Mark all fields as touched to show validation errors
     this.touchAllFields();
 
-    // Check if form is valid
-    if (this.userForm().valid()) {
+    submit(this.userForm, async () => {
       const formData = this.userModel();
       console.log('Form submitted successfully:', formData);
       this.submittedData.set(formData);
-    } else {
-      console.log('Form has validation errors');
-      this.submittedData.set(null);
-    }
+    })
   }
 
   resetForm() {
