@@ -133,11 +133,11 @@ export class SignalFormDemoComponent {
       const selectedDate = new Date(value());
       const today = new Date();
       const age = today.getFullYear() - selectedDate.getFullYear();
-      if (age < 18) {
-        return customError({ kind: 'age', message: 'You must be at least 18 years old' });
-      }
       if (selectedDate > today) {
         return customError({ kind: 'future', message: 'Birthdate cannot be in the future' });
+      }
+      if (age < 18) {
+        return customError({ kind: 'age', message: 'You must be at least 18 years old' });
       }
       return null;
     });
@@ -187,8 +187,8 @@ export class SignalFormDemoComponent {
     });
 
     // Terms agreement required
-    validate(schemaPath.agreeToTerms, (value) => {
-      if (!value) {
+    validate(schemaPath.agreeToTerms, ({ value }) => {
+      if (!value()) {
         return customError({
           kind: 'termsRequired',
           message: 'You must agree to the terms and conditions',
